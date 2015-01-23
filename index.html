@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A simple Magento 1 Tree-Layout explanation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        #tree {
+            font-family: monospace;
+            line-height: 16px;
+        }
+        #tree .tree_level {
+            padding-left: 16px;
+            margin: 2px 0;
+        }
+        #tree .glyphicon {
+            margin-right: 4px;
+        }
+        #tree .glyphicon.glyphicon-folder-open {
+            color: sandybrown;
+            opacity: 0.2;
+        }
+        #tree .glyphicon.glyphicon-file {
+            color: forestgreen;
+            opacity: 0.2;
+        }
+        #tree .tree_level.root {
+            padding-left: 0;
+        }
+        .comment {
+            color: lightgray;
+        }
+        .dir, .file {
+            border: 1px solid transparent;
+            padding: 0 4px;
+        }
+
+        #tree .named-namespace {
+            color: cadetblue;
+        }
+        #tree .named-module {
+            color: deepskyblue;
+        }
+        #tree .named-block {
+            color: indianred;
+        }
+        #tree .named-helper {
+            color: palevioletred;
+        }
+        #tree .named-model {
+            color: darkred;
+        }
+        #tree .fixed-options.local {
+            color: lightslategrey;
+        }
+    </style>
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('#tree span.dir').before('<span class="glyphicon glyphicon-folder-open"></span>');
+            $('#tree span.file').before('<span class="glyphicon glyphicon-file"></span>');
+
+            var get_name = function(node) {
+                var cls = node.attr('class').split(/\s/);
+                for (var i = 0; i < cls.length; i++) {
+                    if (/^named/.test(cls[i]))
+                        return cls[i];
+                }
+            };
+            var $t = function(n) {
+                var n = get_name($(n));
+                if (n)
+                    return $('.'+n)
+                return $([]);
+            };
+            $('.dir, .file').hover(function() {
+                $t(this).addClass('hover').css('border-color', $(this).css('color'));
+            }, function() {
+                $t(this).removeClass('hover').css('border-color', 'transparent');
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Magento Example Folder-Structure</h1>
+    </div>
+<div id="tree">
+<div class="tree_level root"><span class="dir fixed">app</span>
+    <div class="tree_level"><span class="dir fixed">code</span>
+        <div class="tree_level"><span class="dir fixed-options local">local</span>
+            <div class="tree_level"><span class="dir named-namespace">Pointrouge</span>
+                <div class="tree_level"><span class="dir named-module">Modulename</span>
+                    <div class="tree_level"><span class="dir named-block fixed-preset">Block</span>
+                        <div class="tree_level"><span class="file named-file1">ProductSlider.php</span></div>
+                        <div class="tree_level"><span class="dir named-dir1">Product</span>
+                            <div class="tree_level"><span class="file named-file2">View.php</span></div>
+                        </div>
+                    </div>
+                    <div class="tree_level"><span class="dir fixed">controller</span></div>
+                    <div class="tree_level"><span class="dir fixed">etc</span>
+                        <div class="tree_level"><span class="file fixed required">config.xml</span></div>
+                    </div>
+                    <div class="tree_level"><span class="dir named-helper fixed-preset">Helper</span>
+                        <div class="tree_level"><span class="file fixed-preset">Data.php<span class="comment"> // sollte extends Mage_Core_Helper_Abstract</span></span></div>
+                    </div>
+                    <div class="tree_level"><span class="dir named-model fixed-preset">Model</span></div>
+                    <div class="tree_level"><span class="dir fixed">sql</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tree_level"><span class="dir fixed">design</span>
+        <div class="tree_level"><span class="dir fixed">frontend</span>
+            <div class="tree_level"><span class="dir named-magento-package default-base">packagename</span>
+                <div class="tree_level"><span class="dir fixed named-magento-design default-default">designname</span>
+                    <div class="tree_level"><span class="dir fixed fixed">layout</span>
+                        <div class="tree_level"><span class="file named-file3">fooBar.xml</span></div>
+                    </div>
+                    <div class="tree_level"><span class="dir fixed">template</span>
+                        <div class="tree_level"><span class="file named-file4">foo.phtml</span></div>
+                        <div class="tree_level"><span class="file named-file5">bar.phtml</span></div>
+                    </div>
+                    <div class="tree_level"><span class="dir fixed">locale</span>
+                        <div class="tree_level"><span class="dir fixed-locale">de_DE</span>
+                            <div class="tree_level"><span class="file fixed">translate.csv</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tree_level"><span class="dir fixed">etc</span>
+        <div class="tree_level"><span class="dir fixed">modules</span>
+            <div class="tree_level"><span class="file fixed-preset required">Pointrouge_Modulename.xml</span></div>
+        </div>
+    </div>
+    <div class="tree_level"><span class="dir fixed">locale</span>
+        <div class="tree_level"><span class="dir fixed-locale">de_DE</span>
+            <div class="tree_level"><span class="file fixed-preset">Pointrouge_Modulename.csv</span></div>
+        </div>
+    </div>
+    <div class="tree_level"><span class="dir fixed">skin</span>
+        <div class="tree_level"><span class="dir fixed-options frontend">frontend</span>
+            <div class="tree_level"><span class="dir named-magento-package default-base">packagename</span>
+                <div class="tree_level"><span class="dir named-magento-design default-default">designname</span>
+                    <div class="tree_level"><span class="dir named-dir">css</span></div>
+                    <div class="tree_level"><span class="dir named-dir">js</span></div>
+                    <div class="tree_level"><span class="dir named-dir">image</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>
